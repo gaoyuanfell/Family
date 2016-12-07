@@ -110,7 +110,7 @@ exports.login = function (req, res) {
             } else {
                 let md5 = crypto.createHash('md5');
                 var sessionId = md5.update(`${doc._id}`).digest('hex');
-                res.set(Config.tokenHeaders, sessionId);
+                // res.set(Config.tokenHeaders, sessionId);
                 async.series({
                     user: function (done) {
                         User.findUsersById({ _id: doc._id }).then(
@@ -138,6 +138,8 @@ exports.login = function (req, res) {
                         client.set(`${sessionId}`, JSON.stringify(_session));
                         client.expire(`${sessionId}`, Config.sessionTtl);
                         client.quit();
+                        var nowDate = new Date(Date.now() + 1000*60*30);
+                        res.setHeader('Set-Cookie',`${Config.tokenHeaders}=${sessionId}; path=/; expires=${nowDate.toGMTString()};`)
                         res.send({ code: 200, doc: doc, token: sessionId });
                     });
                 });

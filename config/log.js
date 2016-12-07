@@ -26,7 +26,7 @@ exports.use = function (app) {
     //页面请求日志,用auto的话,默认级别是WARN  
     //app.use(log4js.connectLogger(dateFileLog, {level:'auto', format:':method :url'}));  
     app.use(log4js.connectLogger(dateFileLog, {
-        level: 'auto',
+        level: 'warn',
         format: ':method :url'
     }));
 }

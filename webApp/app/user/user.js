@@ -39,9 +39,6 @@ angular.module('userModule',[])
         }
     });
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
     $http.post(baseUrl + '/organize/findNextAllById.htm',{_id:'5795e2e8e1ea987d3ef25e27'}).success(function (res) {
         if(res && res.code == 200){
             console.info(res);
@@ -56,35 +53,38 @@ angular.module('userModule',[])
         })
     });
 
-    $scope.$on('$load',function () {
-        $('.chosen-select').chosen({no_results_text: '没有搜索到此结果'}).change(function (tar, val) {
-            $scope.$apply(function () {
-                $scope.placeholder = val
-            })
-        });
-    });
-
-=======
->>>>>>> b0ece57ba5804a710060af70a478d2711f5fe03b
-=======
->>>>>>> b0ece57ba5804a710060af70a478d2711f5fe03b
-=======
->>>>>>> b0ece57ba5804a710060af70a478d2711f5fe03b
 }])
 
 .controller('FileUploadCtrl',['$scope','$http',function ($scope,$http) {
+    var guid = WebUploader.Base.guid();
     var uploader = WebUploader.create({
         auto:true,
         compress:false,
         server: baseUrl + '/load/profile.htm',
         pick: '#fileUpload',
+        chunked:true,
+        chunkSize:5242880*2,
+        threads:5,
+        thumb:null,
+        formData:{guid:guid},
     })
     uploader.on('uploadSuccess',function(file,res){
-        console.info(file)
-        console.info(res)
-        $scope.$apply(function(){
-            $scope.filePath = res.doc[0].path;
-        })
+        var data = res.doc[0];
+        var destination = data.destination;
+        var originalname = data.originalname;
+        var chunks = data.chunks;
+        if(chunks){
+            $http.post(baseUrl + '/load/profileCount.htm',data).success(function (res) {
+                $scope.filePath = res.doc[0].path;
+            });
+        }else{
+            $scope.$apply(function(){
+                $scope.filePath = res.doc[0].path;
+            })
+        }
+    })
+    uploader.on('uploadComplete',function(){
+        uploader.reset();
     })
 }])
 

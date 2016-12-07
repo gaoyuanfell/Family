@@ -1,7 +1,8 @@
 /**
  * Created by moka on 16-7-18.
  */
-var express = require("./config/express"),
+"use strict";
+const express = require("./config/express"),
     config = require("./config/config"),
     mongoose = require("mongoose");
 

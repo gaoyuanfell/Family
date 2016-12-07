@@ -25,18 +25,18 @@ var express = require('express'),
 module.exports = function (db) {
     var app = express();
     app.use(cors());//跨域
-    app.set('showStackError', true);
+    // app.set('showStackError', true);
 
     //日志记录
-    fs.existsSync(loggerPath) || fs.mkdirSync(loggerPath);
-    var accessLogStream = fileStreamRotator.getStream({
-        date_format: 'YYYYMMDD',
-        filename: path.join(loggerPath, 'log-%DATE%.log'),
-        frequency: 'daily',
-        verbose: false
-    })
-    var combined = ':remote-addr - :remote-user [:date[iso]] ":method :url HTTP/:http-version" :status :res[content-length]bytes ":referrer" ":user-agent"';
-    app.use(logger(combined, { stream: accessLogStream, skip: function (req, res) { return res.statusCode < 0 } }));
+    // fs.existsSync(loggerPath) || fs.mkdirSync(loggerPath);
+    // var accessLogStream = fileStreamRotator.getStream({
+    //     date_format: 'YYYYMMDD',
+    //     filename: path.join(loggerPath, 'log-%DATE%.log'),
+    //     frequency: 'daily',
+    //     verbose: false
+    // })
+    // var combined = ':remote-addr - :remote-user [:date[iso]] ":method :url HTTP/:http-version" :status :res[content-length]bytes ":referrer" ":user-agent"';
+    // app.use(logger(combined, { stream: accessLogStream, skip: function (req, res) { return res.statusCode < 0 } }));
 
     app.use(bodyParser.json(config.bodyParser.json));// for parsing application/json
     app.use(bodyParser.urlencoded(config.bodyParser.urlencoded));// for parsing application/x-www-form-urlencoded
@@ -47,13 +47,12 @@ module.exports = function (db) {
     //静态文件 // Setting the app router and static folder
     app.use(express.static('public'));
     app.use('/uploads',express.static('uploads'));
-    app.use(express.static('www'));
+    app.use(express.static('www',{index:'login.html'}));
     app.use(favicon('public/favicon/favicon.ico'));
 
     app.all('*', function (req, res, next) {
         let url = Url.parse(req.originalUrl).pathname;
         let token = req.get(Config.tokenHeaders);
-        console.info(token);
         if(config.whiteUrlList.indexOf(url) != -1){
             Redis((client) => {
                 client.get(`${token}`, (err, doc) => {
@@ -61,6 +60,8 @@ module.exports = function (db) {
                         client.expire(`${token}`, Config.sessionTtl);
                         client.quit();
                         if(url == '/user/login.htm'){
+                            var nowDate = new Date(Date.now() + 1000*60*30);
+                            res.setHeader('Set-Cookie',`${Config.tokenHeaders}=${token}; path=/; expires=${nowDate.toGMTString()};`)
                             res.send({code:200,token:token});
                         }else{
                             next();
@@ -86,15 +87,14 @@ module.exports = function (db) {
     });
 
 
-
     // Globbing model files
     config.getGlobFiles("./app/modules/**/model/*.js").forEach(function (modelPath) {
         require(path.resolve(modelPath))(db);
     });
     //weixin
-    config.getGlobFiles("./app/business/weixin/model/**.js").forEach(function (modelPath) {
-        require(path.resolve(modelPath))(db);
-    });
+    // config.getGlobFiles("./app/business/weixin/model/**.js").forEach(function (modelPath) {
+    //     require(path.resolve(modelPath))(db);
+    // });
 
     // Globbing routes files
     config.getGlobFiles("./app/modules/**/route/*.js").forEach(function (modelPath) {
@@ -105,9 +105,10 @@ module.exports = function (db) {
         require(path.resolve(modelPath))(app);
     });
 
-    config.getGlobFiles("./app/business/weixin/route/**.js").forEach(function (modelPath) {
-        require(path.resolve(modelPath))(app);
-    });
+    //weixin
+    // config.getGlobFiles("./app/business/weixin/route/**.js").forEach(function (modelPath) {
+    //     require(path.resolve(modelPath))(app);
+    // });
 
     //Assume 500 since no middleware responded
     app.use(function (err, req, res, next) {

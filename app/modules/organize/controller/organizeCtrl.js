@@ -105,7 +105,6 @@ exports.findNextAllById = function (req, res) {
                     } else {
                         --num;
                         num == 0 && back(doc);
-                        console.info(num);
                     }
                 }
             }

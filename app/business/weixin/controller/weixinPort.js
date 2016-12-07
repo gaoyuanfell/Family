@@ -9,6 +9,7 @@ let User = mongoose.model('User');
 let crypto = require('crypto');
 let config = require('../config');
 let https = require('https');
+let request = require('request');
 let xml2js = require('xml2js');
 let async = require('async');
 /**
@@ -32,6 +33,45 @@ let async = require('async');
         });
         req.end();
     }
+
+    function asd(done){
+
+        request.post({url:'http://cpu.baidu.com/1024/a8172d3c?chk=1'},function(_err, _res, body){
+            console.info(_res.headers['set-cookie'])
+        })
+        
+        let _url = `http://cpu.baidu.com/1024/a8172d3c`;
+
+        var j = request.jar();
+
+        var c = `BAIDUID=E45CA675178755C625804625352E7959:FG=1; BIDUPSID=E45CA675178755C625804625352E7959; PSTM=1478428584; __cfduid=de9dae6e0b52f06081c0d4c80314c57031480579375; BDUSS=Ex6S2ttV0QxQVY5Tjl6bGlpZnRJVWY2TlVKWGh3ZHZ5b0staUlheTd3dEZabWRZSVFBQUFBJCQAAAAAAAAAAAEAAADcn5gaZ2FvNDY1NzE2OTkyAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEXZP1hF2T9Ya; MCITY=-%3A; exp=150006_150008_150047_150052; rsst_session=A89FD782-0051-4383-BACD-3D635176D1F4; accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJiYWlkdWlkIjoiRTQ1Q0E2NzUxNzg3NTVDNjI1ODA0NjI1MzUyRTc5NTk6Rkc9MSIsImFwcGlkIjoiYTgxNzJkM2MiLCJpYXQiOjE0ODEwMjIwMjQsImV4cCI6MTQ4MTEwODQyNH0.oiPEsP7fDMwl14PLN68Ug32j50qUFkSFjmn2JkedreY; PSINO=5; H_PS_PSSID=1422_21530_21114_18559_21264_21454_21408_21417_21553_20928; Hm_lvt_7e45c71c9fc634f2b7f1555da47b0b3f=1481021633; Hm_lpvt_7e45c71c9fc634f2b7f1555da47b0b3f=1481022917`
+
+        var cookie = request.cookie(c);
+        j.setCookie(cookie, _url);
+
+        var options = {
+            url: _url,
+            jar: j,
+            json: true,
+            method: 'POST',
+            body: { pageNo:3,pageSize:30 },
+            headers:{
+                // 'Host':'cpu.baidu.com',
+                // 'Origin':'http://cpu.baidu.com',
+                // 'Referer':'http://cpu.baidu.com/',
+            }
+        };
+        
+        request.post(options, (_err, _res, body) => {
+            if (_err) {
+                res.statusCode = 500;
+            } else {
+                console.info(body)
+            }
+        });
+    }
+
+    // asd()
 
     /*    getAccessToken((data) => {
             if(data){
