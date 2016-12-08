@@ -3,5 +3,11 @@
  */
 module.exports = {
     tokenHeaders: 'express-token-key',
-    sessionTtl: 30 * 60 //m
+    sessionTtl: 30 * 60, //m
+    getCookie:function(value,name,time){
+        name = name || this.tokenHeaders;
+        time = time || this.sessionTtl * 1000;
+        var nowDate = new Date(time);
+        return `${name}=${value}; path=/; expires=${nowDate.toGMTString()};`
+    }
 };

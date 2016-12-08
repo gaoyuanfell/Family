@@ -50,18 +50,18 @@ module.exports = function (db) {
     app.use(express.static('www',{index:'login.html'}));
     app.use(favicon('public/favicon/favicon.ico'));
 
-    app.all('*', function (req, res, next) {
+    app.all('*.htm', function (req, res, next) {
         let url = Url.parse(req.originalUrl).pathname;
+        var bo = config.whiteUrlList.indexOf(url) != -1;
         let token = req.get(Config.tokenHeaders);
-        if(config.whiteUrlList.indexOf(url) != -1){
+        if(bo){
             Redis((client) => {
                 client.get(`${token}`, (err, doc) => {
                     if (doc) {
                         client.expire(`${token}`, Config.sessionTtl);
                         client.quit();
                         if(url == '/user/login.htm'){
-                            var nowDate = new Date(Date.now() + 1000*60*30);
-                            res.setHeader('Set-Cookie',`${Config.tokenHeaders}=${token}; path=/; expires=${nowDate.toGMTString()};`)
+                            res.setHeader('Set-Cookie',Config.getCookie(token));
                             res.send({code:200,token:token});
                         }else{
                             next();
@@ -85,7 +85,6 @@ module.exports = function (db) {
             });
         }
     });
-
 
     // Globbing model files
     config.getGlobFiles("./app/modules/**/model/*.js").forEach(function (modelPath) {
@@ -112,7 +111,6 @@ module.exports = function (db) {
 
     //Assume 500 since no middleware responded
     app.use(function (err, req, res, next) {
-        console.error(err.stack);
         // if (!err.stack) return next();
         res.statusCode = 500;
         res.send({
