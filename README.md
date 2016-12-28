@@ -220,3 +220,14 @@ mongod.exe --logpath "d:\Program Files\MongoDB\data\log\mongodb.log" --logappend
     3.将××/utils/redis_init_script 拷贝到/etc/init.d/ 下
     3.将××/redis.conf 拷贝到/etc/redis/ 下
     5.安装sysv-rc-conf sudo apt-get install sysv-rc-conf
+
+
+#ws openssl安装与配置
+    1.安装 http://www.activestate.com/  http://downloads.activestate.com/
+    2.安装 http://www.openssl.org/   openssl
+    
+    命令安装SSL证书 
+    openssl rand 10
+    openssl genrsa -out ca.key 2048
+    openssl req -new -key ca.key -out ca.csr 
+    openssl x509 -req -days 365 -in ca.csr -signkey ca.key -out ca.crt  

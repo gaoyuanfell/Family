@@ -109,25 +109,5 @@ module.exports = function (db) {
     //     require(path.resolve(modelPath))(app);
     // });
 
-    //Assume 500 since no middleware responded
-    app.use(function (err, req, res, next) {
-        // if (!err.stack) return next();
-        res.statusCode = 500;
-        res.send({
-            status: 500,
-            url: req.originalUrl,
-            error: err.stack
-        })
-    });
-
-    // Assume 404 since no middleware responded
-    app.use(function (req, res) {
-        res.statusCode = 404;
-        res.send({
-            status: 404,
-            url: req.originalUrl
-        })
-    });
-
     return app;
 };

@@ -4,8 +4,8 @@
 "use strict";
 
 module.exports = {
-    baseUrl:'//127.0.0.1',
-    fileUrl:'//127.0.0.1',
+    baseUrl:'http://127.0.0.1',
+    fileUrl:'http://127.0.0.1',
     url:'mongodb://127.0.0.1/moka',
     port: 80,
     bodyParser: {

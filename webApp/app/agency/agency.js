@@ -9,7 +9,7 @@ angular.module('agencyModule',[])
 .controller('AgencyCtrl',['$scope','$http',function ($scope,$http) {
     $scope.agency = {};
     $scope.save = function () {
-        $http.post(baseUrl + '/organize/saveEntity.htm', $scope.agency).success(function (res) {
+        $http.post(baseUrl + '/organize/saveEntity.htm', $scope.agency).then(function (res) {
             console.info(res);
         })
     }
