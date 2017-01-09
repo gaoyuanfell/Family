@@ -28,7 +28,6 @@ var storage = multer.diskStorage({
             _p += data + '/';
             if (!fs.existsSync(_p)) fs.mkdirSync(_p);
         });
-        
         cb(null, _path)
     },
     filename: function (req, file, cb) {
@@ -102,6 +101,9 @@ module.exports = function (app) {
     //文件上传
     app.post('/load/profile.htm', upload.any(), function (req, res) {
         var files = req.files;
+        files.forEach(function(file,index){
+            file.fileUrl = `${file.host}/${file.destination}/${file.filename}`;
+        })
         res.send({code: 200, doc: files})
     })
 

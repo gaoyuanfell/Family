@@ -11,3 +11,16 @@ exports.findList = function (req, res) {
             res.send({code: 200, doc: doc});
     })
 };
+
+exports.saveEntity = function(req, res){
+    let menu =  new Menu(req.body);
+    menu.save().then(
+        (doc) => {
+            res.send({ code: 200, doc: doc });
+        },
+        (err) => {
+            res.statusCode = 500;
+            res.send({ code: 500, msg: err });
+        }
+    )
+}

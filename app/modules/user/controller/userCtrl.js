@@ -138,8 +138,7 @@ exports.login = function (req, res) {
                         client.set(`${sessionId}`, JSON.stringify(_session));
                         client.expire(`${sessionId}`, Config.sessionTtl);
                         client.quit();
-                        var nowDate = new Date(Date.now() + 1000*60*30);
-                        res.setHeader('Set-Cookie',`${Config.tokenHeaders}=${sessionId}; path=/; expires=${nowDate.toGMTString()};`)
+                        res.setHeader('Set-Cookie',Config.getCookie(sessionId));
                         res.send({ code: 200, doc: doc, token: sessionId });
                     });
                 });

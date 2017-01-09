@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+<head>
+  <meta charset="UTF-8">
+  <title>moka</title>
+  <link rel="stylesheet" href="src/static/load/webuploader.css">
+  <link rel="stylesheet" href="src/static/ui-select/select.css">
+  <script src="src/static/jquery/jquery.min.js"></script>
+  <script src="src/static/load/webuploader.min.js"></script>
+  <script src="src/static/angular/angular.min.js"></script>
+  <script src="src/static/angular-sanitize/angular-sanitize.min.js"></script>
+  <script src="src/app/application.js"></script>
+  <script src="src/app/user/user.js"></script>
+  <script src="src/app/agency/agency.js"></script>
+
+</head>
+<body>
+<div ng-controller="UserCtrl">
+  <form>
+    <label>用户名：<input ng-model="user.user"></label>
+    <label>密 码：<input ng-model="user.password"></label>
+    <label>机构：
+      <select ng-model="user.organizeId" ng-options="o.name for o in organizeList">
+        <option value="">-- 请选择 --</option>
+      </select>
+    </label>
+    <label>公司：
+      <select ng-model="user.companyId" ng-options="o.name for o in companyList">
+        <option value="">-- 请选择 --</option>
+      </select>
+    </label>
+    <label>角色：
+      <select ng-model="user.roleId" ng-options="o.name for o in roleList">
+        <option value="">-- 请选择 --</option>
+      </select>
+    </label>
+    <button ng-click="save()">用户提交</button>
+  </form>
+
+  <div style="height: 400px">
+
+    <ui-select multiple tagging tagging-label="(custom 'new' label)" ng-model="multipleDemo.colors">
+      <ui-select-match placeholder="Select colors...">{{$item}}</ui-select-match>
+      <ui-select-choices repeat="color in availableColors | filter:$select.search">
+        {{color}}
+      </ui-select-choices>
+    </ui-select>
+
+    <ui-select ng-model="colors">
+      <ui-select-match placeholder="Select colors..."><span ng-bind="$select.selected.name"></span></ui-select-match>
+      <ui-select-choices repeat="o in (organizeList | filter: $select.search) track by o._id">
+        <span ng-bind="o.name"></span>
+      </ui-select-choices>
+    </ui-select>
+
+    <ui-select ng-model="selected.value">
+      <ui-select-match>
+        <span ng-bind="$select.selected.name"></span>
+      </ui-select-match>
+      <ui-select-choices repeat="item in (itemArray | filter: $select.search) track by item.id">
+        <span ng-bind="item.name"></span>
+      </ui-select-choices>
+    </ui-select>
+
+    <ui-select ng-model="selectedItem">
+      <ui-select-match>
+        <span ng-bind="$select.selectedItem"></span>
+      </ui-select-match>
+      <ui-select-choices repeat="o in (organizeList | filter: $select.search) track by o._id">
+        <span ng-bind="o.name"></span>
+      </ui-select-choices>
+    </ui-select>
+  </div>
+
+</div>
+<div ng-controller="AgencyCtrl">
+  <form>
+    <label>机构名称：<input ng-model="agency.name"></label>
+    <label>机构编码：<input ng-model="agency.agencyNumber"></label>
+    <label>父机构：<input ng-model="agency.parentId"></label>
+    <button ng-click="save()">机构提交</button>
+  </form>
+</div>
+<div ng-controller="FileUploadCtrl">
+  <div id="fileUpload">上传</div>
+  <a ng-href="{{filePath}}" target="_blank">查看</a>
+  <form action="/load/profile.htm" ENCTYPE="multipart/form-data" method="post">
+    <input type="file" name="file" multiple="multiple">
+    <input type="submit" value="上传">
+  </form>
+</div>
+
+<div ng-controller="LoginCtrl">
+  <label>用户名：<input type="text" ng-model="user.user"></label>
+  <label>密码：<input type="password" ng-model="user.password"></label>
+  <button ng-click="login()"> 登录 </button>
+</div>
+</body>
+</html>
