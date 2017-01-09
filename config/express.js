@@ -52,7 +52,8 @@ module.exports = function (db) {
 
     app.all('*', function (req, res, next) {
         let url = Url.parse(req.originalUrl).pathname;
-        let token = req.get(Config.tokenHeaders);
+        let token = req.get(Config.tokenHeaders) || req.cookies[Config.tokenHeaders];
+        console.info(token);
         if(config.whiteUrlList.indexOf(url) != -1){
             Redis((client) => {
                 client.get(`${token}`, (err, doc) => {

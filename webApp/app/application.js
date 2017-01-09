@@ -46,7 +46,7 @@ App.factory('HttpInterceptor',['$window',function ($window) {
         request:function (config) {
             var _token = $window.sessionStorage.getItem('token');
             if(_token){
-                config.headers['express-token-key'] = _token
+                // config.headers['express-token-key'] = _token
             }
             return config;
         }
