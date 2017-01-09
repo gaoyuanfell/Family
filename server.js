@@ -2,10 +2,11 @@
  * Created by moka on 16-7-18.
  */
 "use strict";
-const [express,config,mongoose] = [
+const [express,config,mongoose,socket] = [
     require("./config/express"),
     require("./config/config"),
     require("mongoose"),
+    require("./socket")
 ]
 
 mongoose.set('debug', true);
@@ -15,6 +16,7 @@ var db = mongoose.connect(config.url,options).connection;
 db.once('open',function () {
     var app = express(db);
     
+    socket(81);
     app.listen(config.port);
 
     console.log('MEAN.JS application started on port ' + config.port);

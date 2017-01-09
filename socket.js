@@ -1,10 +1,5 @@
-var WebSocket = require('ws');
-var https = require('https');
-var fs = require('fs');
-var url = require('url');
-var port = 8089;
 
-var processRequest = function(req, res) {
+const processRequest = function(req, res) {
     fs.readFile(__dirname + '/www/socket.html',function(err,data){
         if(err){
             if (err) {
@@ -18,44 +13,45 @@ var processRequest = function(req, res) {
     })
 };
 
-var server = https.createServer({
-    key: fs.readFileSync('./public/https/ca.key'),
-    cert: fs.readFileSync('./public/https/ca.crt')
-},processRequest).listen(port)
+const fs = require('fs');
+const https = require('https');
+const WebSocket = require('ws');
 
-// var server = https.createServer(processRequest).listen(port)
+module.exports = function (port) {
+    var server = https.createServer({
+        key: fs.readFileSync('./public/https/ca.key'),
+        cert: fs.readFileSync('./public/https/ca.crt')
+    },processRequest).listen(port)
 
-var WebSocketServer  = WebSocket.Server;
+    // var server = https.createServer(processRequest).listen(port)
 
-var wss = new WebSocketServer({ server: server })
+    var WebSocketServer  = WebSocket.Server;
 
-const session = {};
+    var wss = new WebSocketServer({ server: server })
 
-wss.broadcast = function broadcast(data) {
-    var ws = session[data.toName];
-    if(ws){
-        ws.send(JSON.stringify(data))
-    }
-};
-
-wss.on('connection', function connection(ws,data) {
-    ws.on('message', function (message) {
-        var data = JSON.parse(message);
-        if(!session[data.name]){
-            session[data.name] = this;
+    const session = {};
+    wss.broadcast = function broadcast(data) {
+        var ws = session[data.toName];
+        if(ws){
+            ws.send(JSON.stringify(data))
         }
-        if(data.toName && !session[data.toName]){
-            data.msg = '此用户不在线';
-            data.name = '系统';
-            delete data.toName;
-            this.send(JSON.stringify(data));
-        }else{
-            wss.broadcast(data);
-        }
+    };
+
+    wss.on('connection', function connection(ws,data) {
+        ws.on('message', function (message) {
+            var data = JSON.parse(message);
+            if(!session[data.name]){
+                session[data.name] = this;
+            }
+            if(data.toName && !session[data.toName]){
+                data.msg = '此用户不在线';
+                data.name = '系统';
+                delete data.toName;
+                this.send(JSON.stringify(data));
+            }else{
+                wss.broadcast(data);
+            }
+        });
+        ws.send(JSON.stringify({name:'系统',msg:'你是第' + wss.clients.length + '位'}));  
     });
-    ws.send(JSON.stringify({name:'系统',msg:'你是第' + wss.clients.length + '位'}));  
-});
-
-// module.exports = function () {
-    
-// }
+}
