@@ -1,6 +1,9 @@
+/**
+ * Created by moka on 2017/1/9.
+ */
 
 const processRequest = function(req, res) {
-    fs.readFile(__dirname + '/www/socket.html',function(err,data){
+    fs.readFile(__dirname + '/socket.html',function(err,data){
         if(err){
             if (err) {
                 res.writeHead(500);
@@ -36,22 +39,34 @@ module.exports = function (port) {
      * 第三步：任务开始，将内存的数据存入数据库。
      * @type {{}}
      */
-    const session = {};
+    const $session = {};
+
+    const $room = 100;//房间号
 
     wss.broadcast = function broadcast(data) {
-        let ws = session[data.toName];
+        let ws = $session[data.toName];
         if(ws){
             ws.send(JSON.stringify(data))
         }
     };
 
-    wss.on('connection', function connection(ws,data) {
+    wss.on('connection', function connection(ws) {
         ws.on('message', function (message) {
+            console.info(ws === this);
             let data = JSON.parse(message);
-            if(!session[data.name]){
-                session[data.name] = this;
+            // let room = data.$room;
+            // if(room){
+            //     $session[room] = {
+            //         socket:this,
+            //         name:data.name,
+            //         room:room,
+            //     }
+            // }
+
+            if(!$session[data.name]){
+                $session[data.name] = this;
             }
-            if(data.toName && !session[data.toName]){
+            if(data.toName && !$session[data.toName]){
                 data.msg = '此用户不在线';
                 data.name = '系统';
                 delete data.toName;
@@ -60,6 +75,6 @@ module.exports = function (port) {
                 wss.broadcast(data);
             }
         });
-        ws.send(JSON.stringify({name:'系统',msg:'你是第' + wss.clients.length + '位'}));  
+        ws.send(JSON.stringify({name:'系统',msg:'你是第' + wss.clients.length + '位'}));
     });
 }

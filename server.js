@@ -6,15 +6,15 @@ const [express,config,mongoose,socket] = [
     require("./config/express"),
     require("./config/config"),
     require("mongoose"),
-    require("./socket")
+    require("./app/business/socket/socket")
 ]
 
 mongoose.set('debug', true);
-var options = {};
-var db = mongoose.connect(config.url,options).connection;
+let options = {};
+let db = mongoose.connect(config.url,options).connection;
 
 db.once('open',function () {
-    var app = express(db);
+    let app = express(db);
     
     socket(81);
     app.listen(config.port);
