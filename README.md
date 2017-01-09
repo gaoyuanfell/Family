@@ -232,5 +232,18 @@ mongod.exe --logpath "d:\Program Files\MongoDB\data\log\mongodb.log" --logappend
 
     
 #云服务器选择
-    https://buy.qcloud.com/cvm?marketImgId=371
+[服务器](https://buy.qcloud.com/cvm?marketImgId=371)
     标准的配置89元每月。
+    
+#表结构
+
+####用户表
+
+####业务表
+
+####积分表
+
+####统计表
+    
+    
+    
