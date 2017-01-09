@@ -2,10 +2,10 @@
  * Created by Yuan on 2016/7/19.
  */
 'use strict';
-var mongoose = require("mongoose");
-var Organize = mongoose.model('Organize');
-var Page = require('../../base/page');
-var Msg = require('../../../../config/massage')
+let mongoose = require("mongoose");
+let Organize = mongoose.model('Organize');
+let Page = require('../../base/page');
+let Msg = require('../../../../config/massage')
 
 exports.findList = function (req, res) {
     Page(req.body.pageIndex, req.body.pageSize, Organize, {}, (err, doc) => {
@@ -17,7 +17,7 @@ exports.findList = function (req, res) {
 };
 
 exports.saveEntity = function (req, res) {
-    var organize = new Organize(req.body);
+    let organize = new Organize(req.body);
     organize.save().then(
         (doc) => {
             res.send({ code: 200, doc: doc });
@@ -90,15 +90,15 @@ exports.findNextAllById = function (req, res) {
         if (!num) {
             num = 0;
         }
-        var arr = [];
+        let arr = [];
         array.forEach((data) => {
             arr.push(Organize.find({ parentId: data._id }));
         });
         Promise.all(arr).then(
             (arr) => {
                 num += arr.length;
-                for (var i = 0, j = arr.length; i < j; i++) {
-                    var data = arr[i];
+                for (let i = 0, j = arr.length; i < j; i++) {
+                    let data = arr[i];
                     if (data.length > 0) {
                         array[i].parentList = data;
                         callback(doc, array[i].parentList, --num, back);

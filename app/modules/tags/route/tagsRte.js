@@ -3,9 +3,9 @@
  */
 'use strict';
 let express = require('express');
-var tags = require('../controller/tagsCtrl');
+let tags = require('../controller/tagsCtrl');
 
-var namespace = '/tags';
+let namespace = '/tags';
 
 module.exports = function (app) {
     let route = express.Router();

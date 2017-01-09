@@ -3,9 +3,9 @@
  */
 "use strict";
 let express = require('express');
-var UserDetail = require("../controller/userDetailCtrl");
+let UserDetail = require("../controller/userDetailCtrl");
 
-var namespace = '/userDetail';
+let namespace = '/userDetail';
 
 module.exports = function (app) {
     let route = express.Router();

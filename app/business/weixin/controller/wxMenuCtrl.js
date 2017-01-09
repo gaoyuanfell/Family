@@ -140,7 +140,7 @@ exports.releaseMenu = function (req, res) {
             }
 
             let _url = `https://${config.url}/cgi-bin/menu/create?access_token=${config.access_token}`;
-            var options = {
+            let options = {
                 url: _url,
                 json: true,
                 method: 'POST',

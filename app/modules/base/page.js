@@ -2,7 +2,7 @@
  * Created by Yuan on 2016/7/26.
  */
 "use strict";
-var async = require('async');
+let async = require('async');
 /**
  * 分页
  * @param page
@@ -12,13 +12,13 @@ var async = require('async');
  * @param callback
  */
 module.exports = function (page, pageSize, Model, options, callback) {
-    var populate = options.populate || '';
-    var queryParams = options.queryParams || {};
-    var sortParams = options.sortParams || {};
+    let populate = options.populate || '';
+    let queryParams = options.queryParams || {};
+    let sortParams = options.sortParams || {};
     page = page || 1;
     pageSize = pageSize || 5;
-    var start = (page - 1) * pageSize;
-    var $page = {
+    let start = (page - 1) * pageSize;
+    let $page = {
         pageIndex: page,
         pageSize: pageSize
     };
@@ -34,7 +34,7 @@ module.exports = function (page, pageSize, Model, options, callback) {
             });
         }
     }, function (err, results) {
-        var count = results.count;
+        let count = results.count;
         $page.pageCount = Math.ceil((count - 1) / pageSize);
         $page.results = results.records;
         callback(err, $page);

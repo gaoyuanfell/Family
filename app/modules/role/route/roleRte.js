@@ -3,9 +3,9 @@
  */
 'use strict';
 let express = require('express');
-var role = require('../controller/roleCtrl');
+let role = require('../controller/roleCtrl');
 
-var namespace = '/role';
+let namespace = '/role';
 
 module.exports = function (app) {
     let route = express.Router()

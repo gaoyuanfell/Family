@@ -3,9 +3,9 @@
  */
 'use strict';
 let express = require('express');
-var organize = require('../controller/organizeCtrl');
+let organize = require('../controller/organizeCtrl');
 
-var namespace = '/organize';
+let namespace = '/organize';
 
 module.exports = function (app) {
     let route = express.Router();

@@ -1,7 +1,7 @@
 'use strict';
-var mongoose = require('mongoose');
-var Privilege = mongoose.model('Privilege');
-var Page = require('../../base/page');
+let mongoose = require('mongoose');
+let Privilege = mongoose.model('Privilege');
+let Page = require('../../base/page');
 
 exports.findList = function (req, res) {
     Page(req.body.pageIndex,req.body.pageSize,Privilege,{},(err,doc) => {

@@ -2,9 +2,9 @@
  * Created by Yuan on 2016/7/19.
  */
 'use strict';
-var mongoose = require("mongoose");
-var Role = mongoose.model('Role');
-var Page = require('../../base/page');
+let mongoose = require("mongoose");
+let Role = mongoose.model('Role');
+let Page = require('../../base/page');
 
 exports.findList = function (req, res) {
     Page(req.body.pageIndex, req.body.pageSize, Role, {}, (err, doc) => {
@@ -16,7 +16,7 @@ exports.findList = function (req, res) {
 };
 
 exports.saveEntity = function (req, res) {
-    var role = new Role(req.body);
+    let role = new Role(req.body);
     role.save(req.body).then(
         (doc) => {
             res.send({ code: 200, doc: doc });

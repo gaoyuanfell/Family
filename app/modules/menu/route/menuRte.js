@@ -1,8 +1,8 @@
 'use strict';
 let express = require('express');
-var menu = require('../controller/menuCtrl');
+let menu = require('../controller/menuCtrl');
 
-var namespace = '/menu';
+let namespace = '/menu';
 
 module.exports = function(app){
     let route = express.Router();

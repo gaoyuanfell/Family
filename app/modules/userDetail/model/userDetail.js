@@ -3,9 +3,9 @@
  * 用户详情
  */
 'use strict';
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
-var UserDetailSchema = new Schema({
+let mongoose = require('mongoose');
+let Schema = mongoose.Schema;
+let UserDetailSchema = new Schema({
     userId:{type:Schema.Types.ObjectId,ref:'User'},
     valid:{type:Number,default:0},
     sort:{type:Number},

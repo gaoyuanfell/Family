@@ -2,9 +2,9 @@
  * Created by Yuan on 2016/7/17.
  */
 'use strict';
-var mongoose = require("mongoose");
-var UserDetail = mongoose.model('UserDetail');
-var Page = require('../../base/page');
+let mongoose = require("mongoose");
+let UserDetail = mongoose.model('UserDetail');
+let Page = require('../../base/page');
 
 exports.findList = function (req, res) {
     Page(req.body.pageIndex, req.body.pageSize, UserDetail, {}, (err, doc) => {

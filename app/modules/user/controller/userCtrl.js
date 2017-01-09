@@ -5,7 +5,7 @@
 let mongoose = require("mongoose");
 let User = mongoose.model('User');
 let UserDetail = mongoose.model('UserDetail');
-var Role = mongoose.model('Role');
+let Role = mongoose.model('Role');
 let Page = require('../../base/page');
 let Redis = require('../../base/redis');
 let Config = require('../../../config/config');
@@ -109,7 +109,7 @@ exports.login = function (req, res) {
                 res.send({ code: 404 });
             } else {
                 let md5 = crypto.createHash('md5');
-                var sessionId = md5.update(`${doc._id}`).digest('hex');
+                let sessionId = md5.update(`${doc._id}`).digest('hex');
                 // res.set(Config.tokenHeaders, sessionId);
                 async.series({
                     user: function (done) {
@@ -133,7 +133,7 @@ exports.login = function (req, res) {
                         )
                     }
                 }, function (err, result) {
-                    var _session = { user: result.user, authList: result.auth };
+                    let _session = { user: result.user, authList: result.auth };
                     Redis((client) => {
                         client.set(`${sessionId}`, JSON.stringify(_session));
                         client.expire(`${sessionId}`, Config.sessionTtl);

@@ -2,10 +2,10 @@
  * Created by Yuan on 2016/7/19.
  * 机构
  */
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+let mongoose = require('mongoose');
+let Schema = mongoose.Schema;
 
-var OrganizeSchema = new Schema({
+let OrganizeSchema = new Schema({
     name: {
         type: String
     },

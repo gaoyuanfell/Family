@@ -3,9 +3,9 @@
  */
 'use strict';
 let express = require('express');
-var auth = require('../controller/authCtrl');
+let auth = require('../controller/authCtrl');
 
-var namespace = '/auth';
+let namespace = '/auth';
 
 module.exports = function (app) {
     let route = express.Router();

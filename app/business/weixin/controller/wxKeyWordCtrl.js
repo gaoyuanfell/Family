@@ -44,7 +44,7 @@ exports.findByKey = function (req, res) {
 };
 
 exports.saveEntity = function (req, res) {
-    var wxKeyWord = new WxKeyWord(req.body);
+    let wxKeyWord = new WxKeyWord(req.body);
     wxKeyWord.save(req.body).then(
         (doc) => {
             res.send({ code: 200, doc: doc });

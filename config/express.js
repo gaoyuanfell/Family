@@ -2,7 +2,7 @@
  * Created by moka on 16-7-18.
  */
 "use strict";
-var express = require('express'),
+let express = require('express'),
     path = require("path"),
     Url = require("url"),
     fs = require('fs'),
@@ -23,19 +23,19 @@ var express = require('express'),
     Redis = require('../app/modules/base/redis');
 
 module.exports = function (db) {
-    var app = express();
+    let app = express();
     app.use(cors());//跨域
     // app.set('showStackError', true);
 
     //日志记录
     // fs.existsSync(loggerPath) || fs.mkdirSync(loggerPath);
-    // var accessLogStream = fileStreamRotator.getStream({
+    // let accessLogStream = fileStreamRotator.getStream({
     //     date_format: 'YYYYMMDD',
     //     filename: path.join(loggerPath, 'log-%DATE%.log'),
     //     frequency: 'daily',
     //     verbose: false
     // })
-    // var combined = ':remote-addr - :remote-user [:date[iso]] ":method :url HTTP/:http-version" :status :res[content-length]bytes ":referrer" ":user-agent"';
+    // let combined = ':remote-addr - :remote-user [:date[iso]] ":method :url HTTP/:http-version" :status :res[content-length]bytes ":referrer" ":user-agent"';
     // app.use(logger(combined, { stream: accessLogStream, skip: function (req, res) { return res.statusCode < 0 } }));
 
     app.use(bodyParser.json(config.bodyParser.json));// for parsing application/json

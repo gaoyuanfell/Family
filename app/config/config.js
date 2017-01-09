@@ -7,7 +7,7 @@ module.exports = {
     getCookie:function(value,name,time){
         name = name || this.tokenHeaders;
         time = time || this.sessionTtl * 1000;
-        var nowDate = new Date(time);
+        let nowDate = new Date(time);
         return `${name}=${value}; path=/; expires=${nowDate.toGMTString()};`
     }
 };

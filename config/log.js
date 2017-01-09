@@ -1,4 +1,4 @@
-var log4js = require('log4js');
+let log4js = require('log4js');
 log4js.configure({
     appenders: [{
         type: 'console',
@@ -18,7 +18,7 @@ log4js.configure({
     }
 });
 
-var dateFileLog = log4js.getLogger('dateFileLog');
+let dateFileLog = log4js.getLogger('dateFileLog');
 
 exports.logger = dateFileLog;
 

@@ -2,11 +2,11 @@
  * Created by moka on 16-7-29.
  */
 'use strict';
-var redis = require('redis');
-var async = require('async');
+let redis = require('redis');
+let async = require('async');
 
 module.exports = function (callback) {
-    var client = redis.createClient();
+    let client = redis.createClient();
     async.parallel({
         init: function (done) {
             client.on("connect", function () {
@@ -14,7 +14,7 @@ module.exports = function (callback) {
             });
         }
     }, function (err, results) {
-        var client = results.init;
+        let client = results.init;
         callback(client, redis);
     });
 };

@@ -2,8 +2,8 @@
  * Created by Yuan on 2016/7/19.
  */
 'use strict';
-var mongoose = require("mongoose");
-var TagsUser = mongoose.model('TagsUser');
+let mongoose = require("mongoose");
+let TagsUser = mongoose.model('TagsUser');
 let Page = require('../../base/page');
 
 exports.findList = function (req, res) {
@@ -16,7 +16,7 @@ exports.findList = function (req, res) {
 };
 
 exports.saveEntity = function (req, res) {
-    var role = new TagsUser(req.body);
+    let role = new TagsUser(req.body);
     role.save(req.body).then(
         (doc) => {
             res.send({ code: 200, doc: doc });

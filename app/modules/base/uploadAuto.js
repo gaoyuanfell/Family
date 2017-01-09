@@ -2,28 +2,28 @@
  * Created by Yuan on 2016/7/27.
  */
 "use strict";
-var multer = require('multer');
-var uuid = require('uuid');
-var fs = require('fs');
-var config = require('../../../config/config');
-var child_process = require('child_process');
+let multer = require('multer');
+let uuid = require('uuid');
+let fs = require('fs');
+let config = require('../../../config/config');
+let child_process = require('child_process');
 
-var storage = multer.diskStorage({
+let storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        var _date = new Date();
-        var _path = `uploads/${_date.getFullYear()}/${_date.getMonth() + 1}/${_date.getDate()}`;
+        let _date = new Date();
+        let _path = `uploads/${_date.getFullYear()}/${_date.getMonth() + 1}/${_date.getDate()}`;
         
         //采用百度 WebUploader 分片上传技术
-        var guid = req.body.guid;
-        var chunk = req.body.chunk;
-        var chunks = req.body.chunks;
+        let guid = req.body.guid;
+        let chunk = req.body.chunk;
+        let chunks = req.body.chunks;
         if(chunks){
             _path += `/${guid}`;
             file.chunks = chunks;
         }
         
-        var _array = _path.split('/');
-        var _p = '';
+        let _array = _path.split('/');
+        let _p = '';
         _array.forEach((data) => {
             _p += data + '/';
             if (!fs.existsSync(_p)) fs.mkdirSync(_p);
@@ -32,8 +32,8 @@ var storage = multer.diskStorage({
     },
     filename: function (req, file, cb) {
         //采用百度 WebUploader 分片上传技术
-        var chunk = req.body.chunk;
-        var chunks = req.body.chunks;
+        let chunk = req.body.chunk;
+        let chunks = req.body.chunks;
         if(chunks){
             file.filename = chunk + '-' + file.originalname;
         }else{
@@ -44,7 +44,7 @@ var storage = multer.diskStorage({
     }
 });
 
-var upload = multer({
+let upload = multer({
     storage: storage,
     limits: {
 
@@ -60,10 +60,10 @@ var upload = multer({
  * @param {Array or String} source 源文件 可多个地址
  */
 function fileCount(target,source,callback){
-    var as = fs.createWriteStream(target);
+    let as = fs.createWriteStream(target);
     forEachWrite(0,source,as);
     function forEachWrite(index,array,writeStream){
-        var s = fs.createReadStream(array[index]);
+        let s = fs.createReadStream(array[index]);
         s.on('data',function(chunk){
             writeStream.write(chunk);
         });
@@ -82,11 +82,11 @@ function fileCount(target,source,callback){
 
 //删除文件夹下的所有文件或文件夹
 function deleteFolderRecursive(path) {
-    var files = [];
+    let files = [];
     if( fs.existsSync(path) ) {
         files = fs.readdirSync(path);
         files.forEach(function(file,index){
-            var curPath = path + "/" + file;
+            let curPath = path + "/" + file;
             if(fs.statSync(curPath).isDirectory()) {
                 deleteFolderRecursive(curPath);
             } else {
@@ -100,7 +100,7 @@ function deleteFolderRecursive(path) {
 module.exports = function (app) {
     //文件上传
     app.post('/load/profile.htm', upload.any(), function (req, res) {
-        var files = req.files;
+        let files = req.files;
         files.forEach(function(file,index){
             file.fileUrl = `${file.host}/${file.destination}/${file.filename}`;
         })
@@ -109,15 +109,15 @@ module.exports = function (app) {
 
     //上传成功后 将分片的文件合并成一个文件
     app.post('/load/profileCount.htm', function (req, res) {
-        var data = req.body;
-        var chunks = data.chunks;
-        var originalname = data.originalname;
-        var destination = data.destination;
-        var files = [];
-        for(var i = 0; i<chunks; i++){
+        let data = req.body;
+        let chunks = data.chunks;
+        let originalname = data.originalname;
+        let destination = data.destination;
+        let files = [];
+        for(let i = 0; i<chunks; i++){
             files.push(`${destination}/${i}-${originalname}`)
         }
-        var target = destination.substr(0,destination.lastIndexOf('/')+1) + `${uuid.v4()}-${originalname}`;
+        let target = destination.substr(0,destination.lastIndexOf('/')+1) + `${uuid.v4()}-${originalname}`;
         fileCount(target,files,function(){
             deleteFolderRecursive(destination);
             data.path = target;

@@ -1,8 +1,8 @@
 'use strict';
 let express = require('express');
-var privilege = require('../controller/privilegeCtrl');
+let privilege = require('../controller/privilegeCtrl');
 
-var namespace = '/privilege';
+let namespace = '/privilege';
 
 module.exports = function(app){
     let route = express.Router();

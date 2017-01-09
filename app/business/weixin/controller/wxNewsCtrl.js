@@ -28,7 +28,7 @@ exports.findById = function (req, res) {
 };
 
 exports.saveEntity = function (req, res) {
-    var wxNews = new WxNews(req.body);
+    let wxNews = new WxNews(req.body);
     if (wxNews.articles && (wxNews.articles.length > 10 || 　wxNews.articles.length == 0)) {
         res.send({ code: 500, msg: '图文消息个数，限制为1 - 10条以内' });
     } else {

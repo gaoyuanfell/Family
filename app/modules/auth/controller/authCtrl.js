@@ -2,9 +2,9 @@
  * Created by Yuan on 2016/7/19.
  */
 'use strict';
-var mongoose = require("mongoose");
-var Auth = mongoose.model('Auth');
-var Page = require('../../base/page');
+let mongoose = require("mongoose");
+let Auth = mongoose.model('Auth');
+let Page = require('../../base/page');
 
 exports.findList = function (req, res) {
     Page(req.body.pageIndex, req.body.pageSize, Auth, {}, (err, doc) => {
@@ -16,7 +16,7 @@ exports.findList = function (req, res) {
 };
 
 exports.saveEntity = function (req, res) {
-    var auth = new Auth(req.body);
+    let auth = new Auth(req.body);
     auth.save(req.body).then(
         (doc) => {
             res.send({ code: 200, doc: doc });

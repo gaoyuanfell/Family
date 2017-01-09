@@ -1,8 +1,8 @@
 'use strict';
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+let mongoose = require('mongoose');
+let Schema = mongoose.Schema;
 
-var PrivilegeSchema = new Schema({
+let PrivilegeSchema = new Schema({
     master:{
         type:String
     },

@@ -2,10 +2,10 @@
  * Created by Yuan on 2016/7/19.
  * 角色
  */
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+let mongoose = require('mongoose');
+let Schema = mongoose.Schema;
 
-var RoleSchema = new Schema({
+let RoleSchema = new Schema({
     name: {
         type: String
     },
