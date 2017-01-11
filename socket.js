@@ -45,6 +45,10 @@ module.exports = function (port) {
         }
     };
 
+    wss.on('close',function (ws) {
+        console.info(ws);
+    })
+
     wss.on('connection', function connection(ws,data) {
         ws.on('message', function (message) {
             let data = JSON.parse(message);
